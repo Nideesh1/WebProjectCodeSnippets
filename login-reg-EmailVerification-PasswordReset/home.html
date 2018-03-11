@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width"> 
+  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "",
+    authDomain: "testlogin-dc7ce.firebaseapp.com",
+    databaseURL: "https://testlogin-dc7ce.firebaseio.com",
+    projectId: "testlogin-dc7ce",
+    storageBucket: "testlogin-dc7ce.appspot.com",
+    messagingSenderId: "540241385169"
+  };
+  firebase.initializeApp(config);
+  </script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Material Design Theming -->
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+
+  <!-- Import and configure the Firebase SDK -->
+  <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
+  <!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
+  <!-- <script src="/__/firebase/4.0.0/firebase-app.js"></script> -->
+  <!-- <script src="/__/firebase/4.0.0/firebase-auth.js"></script> -->
+  <!-- <script src="/__/firebase/init.js"></script> -->
+  <script type="text/javascript">
+    window.onload = function() {
+      initApp();
+
+    };
+
+    function initApp() {
+      // Listening for auth state changes.
+      // [START authstatelistener]
+      firebase.auth().onAuthStateChanged(function(user) {
+        // [START_EXCLUDE silent]
+        console.log(user);
+        
+        // [END_EXCLUDE]
+        if (user) {
+          // User is signed in.
+          var displayName = user.displayName;
+          var email = user.email;
+          var emailVerified = user.emailVerified;
+          var photoURL = user.photoURL;
+          var isAnonymous = user.isAnonymous;
+          var uid = user.uid;
+          var providerData = user.providerData;
+
+
+          //document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+          if (!emailVerified) {
+            //document.getElementById('quickstart-verify-email').disabled = false;
+            console.log("inside");
+            console.log(email);
+            
+          } else if(emailVerified){
+            //If email is verified
+
+
+          }
+          
+          
+
+
+          // [END_EXCLUDE]
+        } else {
+          // User is signed out.
+          // [START_EXCLUDE]
+          location.href = "index.html";
+
+          // [END_EXCLUDE]
+        }
+        // [START_EXCLUDE silent]
+        
+        // [END_EXCLUDE]
+      });
+      // [END authstatelistener]
+       document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+      document.getElementById('quickstart-password-reset').addEventListener('click', sendPasswordReset, false);   
+     
+    }
+ 
+
+   function toggleSignIn() {
+      if (firebase.auth().currentUser) {
+        // [START signout]
+        firebase.auth().signOut();
+        // [END signout]
+      } else {
+        var email = firebase.auth().currentUser.email;
+        var password = document.getElementById('password').value;
+        if (email.length < 4) {
+          alert('Please enter an email address.');
+          return;
+        }
+        if (password.length < 4) {
+          alert('Please enter a password.');
+          return;
+        }
+        // Sign in with email and pass.
+        // [START authwithemail]
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+          } else {
+            alert(errorMessage);
+          //Clearing the input fields
+          document.getElementById('email').value = "";
+          document.getElementById('password').value = "";
+
+
+          }
+          console.log(error);
+
+          console.log("zxcv");
+          // [END_EXCLUDE]
+        });
+        // [END authwithemail]
+      }
+
+    }
+
+   function sendPasswordReset() {
+      var email = firebase.auth().currentUser.email;
+      // [START sendpasswordemail]
+      firebase.auth().sendPasswordResetEmail(email).then(function() {
+        // Password Reset Email Sent!
+        // [START_EXCLUDE]
+        alert('Password Reset Email Sent!');
+        // [END_EXCLUDE]
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode == 'auth/invalid-email') {
+          alert(errorMessage);
+        } else if (errorCode == 'auth/user-not-found') {
+          alert(errorMessage);
+        }
+        console.log(error);
+        // [END_EXCLUDE]
+      });
+      // [END sendpasswordemail];
+    }
+
+
+
+  </script>
+</head>
+<body>
+      Home
+<br>
+
+          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signout">Sign Out</button>
+
+        Do you want to change your password?
+
+          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Change My Password</button>
+
+</body>
+</html>
