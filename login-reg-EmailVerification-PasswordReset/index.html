@@ -225,19 +225,40 @@
     <div class="header">
       <h4>DJ Chino</h4>
     </div>
-    <input class="mdl-textfield__input" style="display:inline;width:auto;" type="text" id="email" name="email" placeholder="Email"/>
-            &nbsp;&nbsp;&nbsp;
-            <input class="mdl-textfield__input" style="display:inline;width:auto;" type="password" id="password" name="password" placeholder="Password"/>
-            <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signin">Sign In</button>
-            &nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
+    <form class="registration-form">
 
-            <br><br>
+      <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="email" name="email" autofocus>
+          <label class="mdl-textfield__label" for="email">Email</label>
+       </div>
 
-                    Did you forget your password? Type in your email in the space above and click this button below.
+       <div class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="password" name="password">
+          <label class="mdl-textfield__label" for="password">Password</label>
+       </div>
 
-            <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
+      <div class="sign-in-input-group">
+        <button class="sign-in-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="quickstart-sign-in" name="signin">Sign In</button>
+      </div>
 
+      <div class="cannot-sign-in">
+        <label class="forgot-password"><a href="#">Forgot password?</a></label>
+        <label class="no-account"><a href="#">Create an account</a></label>
+      </div>
+
+
+
+      <!-- <div class="password-reset-input-group">
+          <p>Forgot your password? Type in your email in the space above and click this button below.</p>
+          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
+      </div>
+
+        <div class="sign-up-input-group">
+          <p>Don't have an account? Sign up now!</p>
+          <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
+        </div> -->
+
+   </form>
           
   </div>
 </body>

@@ -1,3 +1,49 @@
+.registration-form {
+    display: block;
+    margin: 0 auto;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
 .index-wrapper .header {
     text-align: center;
 }
+
+.mdl-textfield .mdl-js-textfield .mdl-textfield--floating-label {
+    width: auto;
+}
+
+.mdl-textfield__label {
+    margin: 0;
+    font-size: 12px;
+}
+
+.email-input-group, .password-input-group {
+    width: 100%;
+}
+
+
+.email-input-group, .password-input-group, .sign-in-button {
+    display: block;
+    margin: 0 auto;
+}
+
+.sign-in-button {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.cannot-sign-in {
+    margin-top: 5px;
+}
+
+.forgot-password, .no-account {
+    display: inline-block;
+}
+
+.no-account {
+    float: right;
+}
+
+
