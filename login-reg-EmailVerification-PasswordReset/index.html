@@ -114,38 +114,42 @@
       } else {
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
-        if (email.length < 4) {
-          alert('Please enter an email address.');
-          return;
-        }
-        if (password.length < 4) {
-          alert('Please enter a password.');
-          return;
-        }
+        var errorMsg = '';
+
+        if (!email || email.length === 0) {
+            errorMsg = 'Please enter an email address.'
+            attachErrorElement(createErrorElement(errorMsg), '#email-input-group');
+            console.log(errorMsg);
+        } 
+
+        if (!password || password.length === 0) {
+            errorMsg = 'Please enter a password.'
+            attachErrorElement(createErrorElement(errorMsg), '#password-input-group');
+            console.log(errorMsg);
+            return;
+        } 
+
         // Sign in with email and pass.
         // [START authwithemail]
         firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // [START_EXCLUDE]
-          if (errorCode === 'auth/wrong-password') {
-            alert('Wrong password.');
-          } else {
-            if(errorMessage){
-              console.log('ERROR: ', errorMessage);
+            // [START_EXCLUDE]
+            var errorToDisplay = createErrorElement(error.message);
+            var fieldName = ''; //this is used to grab the respective element
+            switch(error.code) {
+                case 'auth/invalid-email':
+                    fieldName = 'email';
+                    break;
+                case 'auth/wrong-password':
+                case 'auth/weak-password':
+                    fieldName = 'password';
+                    break;
+                case 'auth/user-not-found':
+                //for all other cases grab last div
+                default:
             }
-            //alert(errorMessage);
-          // //Clearing the input fields
-          // document.getElementById('email').value = "";
-          // document.getElementById('password').value = "";
-
-
-          }
-          console.log(error);
-
-          console.log("zxcv");
-          // [END_EXCLUDE]
+            attachErrorElement(errorToDisplay, '#' + fieldName + '-input-group');
+            console.log('ERROR: ', error);
+            // [END_EXCLUDE]
         });
         // [END authwithemail]
       }
@@ -156,25 +160,43 @@
     function handleSignUp() {
       var email = document.getElementById('email').value;
       var password = document.getElementById('password').value;
-      if (email.length < 4) {
-        alert('Please enter an email address.');
-        return;
+      var errorMsg, 
+          errorToDisplay;
+
+      if (!email || email.length === 0) {
+          errorMsg = 'Please enter an email address.'
+          errorToDisplay = createErrorElement(errorMsg);
+          console.log(errorMsg);
+          return;
+      } else if (email.length < 4) {
+          errorMsg = 'Email address cannot be less than 4 characters.';
+          var errorToDisplay = createErrorElement(errorMsg);
+          console.log(errorMsg);
+          return;
       }
-      if (password.length < 4) {
-        alert('Please enter a password.');
-        return;
+
+      if (!password || password.length === 0) {
+          errorMsg = 'Please enter a password.'
+          errorToDisplay = createErrorElement(errorMsg);
+          attachErrorElement(errorToDisplay, '#password-input-group');
+          console.log(errorMsg);
+          return;
+      } else if (password.length < 4) {
+          errorMsg = 'Password cannot be less than 4 characters.';
+          errorToDisplay = createErrorElement(errorMsg);
+          attachErrorElement(errorToDisplay, '#password-input-group');
+          console.log(errorMsg);
+          return;
       }
+
       // Sign in with email and pass.
       // [START createwithemail]
       firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
         // [START_EXCLUDE]
-        if (errorCode == 'auth/weak-password') {
-          alert('The password is too weak.');
+        if (error.code == 'auth/weak-password') {
+          console.log('The password is too weak.');
         } else {
-          alert(errorMessage);
+          console.log(error.message);
           //Clearing the input fields
           document.getElementById('email').value = "";
           document.getElementById('password').value = "";
@@ -201,17 +223,14 @@
       firebase.auth().sendPasswordResetEmail(emailAddress).then(function() {
         // Password Reset Email Sent!
         // [START_EXCLUDE]
-        alert('Password Reset Email Sent!');
+        console.log('Password Reset Email Sent!');
         // [END_EXCLUDE]
       }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
         // [START_EXCLUDE]
-        if (errorCode == 'auth/invalid-email') {
-          alert(errorMessage);
-        } else if (errorCode == 'auth/user-not-found') {
-          alert(errorMessage);
+        if (error.code == 'auth/invalid-email') {
+          console.log(error.message);
+        } else if (error.code == 'auth/user-not-found') {
+          console.log(error.message);
         }
         console.log(error);
         // [END_EXCLUDE]
@@ -219,7 +238,28 @@
       // [END sendpasswordemail];
     }
 
+    /* Helper method for creating error message elements to display in UI */
+    /* String[required], element type[optional] */
+    function createErrorElement(errorMsg, elementType=null) {
+        elementType = elementType ? elementType : 'p'; 
+        var errorElement = document.createElement(elementType);
+        errorElement.setAttribute('style', 'position: absolute;');
+        errorElement.innerHTML = errorMsg;
+        return errorElement;
+    }
 
+    /* Helper method for displaying error in DOM */
+    /* errorElement[element], targetElement[string] accepts ID's # and classes . */
+    function attachErrorElement(errorElement, targetElement) {
+        if(targetElement.indexOf('#') > -1) {
+          document.getElementById(targetElement.substring(1, targetElement.length))
+                .appendChild(errorElement);
+        }
+        if(targetElement.indexOf('.') > -1) {
+          document.getElementsByClassName(targetElement.substring(1, targetElement.length))
+                .appendChild(errorElement);
+        }
+    }
 
   </script>
 </head>
@@ -231,13 +271,13 @@
 
     <div class="registration-form">
 
-      <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div id="email-input-group" class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="email" id="email" name="email" maxlength="255" autofocus>
           <label class="mdl-textfield__label" for="email">Email</label>
        </div>
 
-       <div class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="password" id="password" name="password" maxlength="128">
+       <div id="password-input-group" class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="password-input-field mdl-textfield__input" type="password" id="password" name="password" maxlength="128">
           <label class="mdl-textfield__label" for="password">Password</label>
        </div>
 
