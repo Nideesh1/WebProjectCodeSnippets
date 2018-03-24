@@ -9,7 +9,7 @@
     padding-right: 5vw;
 }
 
-.account-success-text {
+.verification-header, .account-success-text {
     padding: 30px;
     letter-spacing: 1.2px;
 }
