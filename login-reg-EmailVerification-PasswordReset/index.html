@@ -44,7 +44,7 @@
 
     };
 
-
+    /* Initialize application */
     function initApp() {
       // Listening for auth state changes.
       // [START authstatelistener]
@@ -69,10 +69,11 @@
           //Proper buttons
           document.getElementById('quickstart-sign-in').textContent = 'Sign out';
           document.getElementById('quickstart-sign-up').disabled = true;
-
+          
           //Clearing the input fields
-          document.getElementById('email').value = "";
-          document.getElementById('password').value = "";
+          resetInputFields(['email', 'password']);
+          //document.getElementById('email').value = "";
+          //document.getElementById('password').value = "";
 
           //document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
           if (!emailVerified) {
@@ -107,51 +108,43 @@
             document.getElementById('quickstart-password-reset').addEventListener('click', sendPasswordReset, false);
     }
 
-
+    /* Handle user sign in */
     function toggleSignIn() {
-      if (firebase.auth().currentUser) {
-        // [START signout]
-        firebase.auth().signOut();
-        // [END signout]
-      } else {
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
+        if (firebase.auth().currentUser) {
+            // [START signout]
+            firebase.auth().signOut();
+            // [END signout]
+        } else {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
 
-        if(!(email && password)) {
-            if(!email) { 
-              setErrorFlag('Please enter an email address.', '#email-error-flag'); 
-              console.log('Please enter an email address.'); 
-            }
-            if(!password) { 
-              setErrorFlag('Please enter a password.', '#password-error-flag'); 
-              console.log('Please enter a password.'); 
-            }
-            return;
+            if(!validateInputFields(email, password)) {
+                return;
+            };
+            
+            // Sign in with email and pass.
+            // [START authwithemail]
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                // [START_EXCLUDE]
+                var field = ''; 
+                switch(error.code) {
+                    case 'auth/invalid-email':
+                        field = 'email';
+                        break;
+                    case 'auth/wrong-password':
+                    case 'auth/weak-password':
+                        field = 'password';
+                        break;
+                    case 'auth/user-not-found':
+                    default:
+                        field = 'misc';
+                }
+                setErrorFlag(error.message, '#' + field + '-error-flag');
+                console.log('ERROR: ', error);
+                // [END_EXCLUDE]
+            });
+            // [END authwithemail]
         }
-
-        // Sign in with email and pass.
-        // [START authwithemail]
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-            // [START_EXCLUDE]
-            var field = ''; 
-            switch(error.code) {
-                case 'auth/invalid-email':
-                    field = 'email';
-                    break;
-                case 'auth/wrong-password':
-                case 'auth/weak-password':
-                    field = 'password';
-                    break;
-                case 'auth/user-not-found':
-                default:
-                    field = 'misc';
-            }
-            setErrorFlag(error.message, '#' + field + '-error-flag');
-            console.log('ERROR: ', error);
-            // [END_EXCLUDE]
-        });
-        // [END authwithemail]
-      }
 
     }
 
@@ -160,7 +153,97 @@
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
 
+        if(!validateInputFields(email, password)) {
+            return;
+        };
+
+        // Sign in with email and pass.
+        // [START createwithemail]
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // [START_EXCLUDE]
+            if (error.code == 'auth/weak-password') {
+                setErrorFlag('The password is too weak.', '#email-error-flag')
+                console.log('The password is too weak.');
+            } else {
+                console.log(error.message);
+                setErrorFlag(error.message);
+                //Clearing the input fields
+                resetInputFields(['email', 'password']);
+                //document.getElementById('email').value = "";
+                //document.getElementById('password').value = "";
+                console.log("big poppa");
+            }
+            console.log(error);
+            // [END_EXCLUDE]
+            console.log(2);
+            
+          });
+
+        // [END createwithemail]
+        console.log(1);
+    
+      }
+
+    /* Send email to reset password */
+    function sendPasswordReset() {
+        var auth = firebase.auth();
+        var emailAddress = document.getElementById('email').value;
+        // [START sendpasswordemail]
+        firebase.auth().sendPasswordResetEmail(emailAddress).then(function() {
+            // Password Reset Email Sent!
+            // [START_EXCLUDE]
+            console.log('Password Reset Email Sent!');
+            // [END_EXCLUDE]
+        }).catch(function(error) {
+            // [START_EXCLUDE]
+            if (error.code == 'auth/invalid-email') {
+                console.log(error.message);
+            } else if (error.code == 'auth/user-not-found') {
+                console.log(error.message);
+            }
+            console.log(error);
+            // [END_EXCLUDE]
+        });
+        // [END sendpasswordemail];
+    }
+
+    /* Helper method for resetting input fields */
+    /* fields[string of id/class or array of strings] */
+    function resetInputFields(fields) {
+        if (typeof fields == 'object') {
+            fields.forEach(element => {
+                document.getElementById(element).value = '';
+            });
+        } else {
+            document.getElementById(fields).value = '';
+        }
+        console.log('RESETTTTT');   
+    }
+
+    /* Reset error flags */
+    /* Flag[string of element ID or class] */
+    function resetFlag(flag) {
+        var selector = (flag.indexOf('#') > -1 || flag.indexOf('.') > -1)
+                       ? flag.substring(1, flag.length) 
+                       : flag;
+        var el = flag.indexOf('#') > -1 
+                 ? document.getElementById(selector) 
+                 : document.getElementsByClassName(selector);
+        el.innerHTML = '';
+        el.setAttribute('style', 'display:none;');
+    }
+
+    /* Reset all error flags */
+    function resetAllFlags() {
+        
+    }
+
+    /* Validate input fields */
+    /* email[string], password[string] */
+    function validateInputFields(email, password) {
+        var valid = true;
         if(!(email && password) || !(email.length > 4 && password.length > 4)) {
+            valid = false;
             if(!email) { 
               setErrorFlag('Please enter an email address.', '#email-error-flag'); 
               console.log('Please enter an email address.'); 
@@ -175,62 +258,14 @@
               setErrorFlag('Password cannot be less than 4 characters.', '#password-error-flag');
               console.log('Password cannot be less than 4 characters.');
             }
-            return;
         }
-
-        // Sign in with email and pass.
-        // [START createwithemail]
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-            // [START_EXCLUDE]
-            if (error.code == 'auth/weak-password') {
-              console.log('The password is too weak.');
-            } else {
-              console.log(error.message);
-              //Clearing the input fields
-              document.getElementById('email').value = "";
-              document.getElementById('password').value = "";
-              console.log("big poppa");
-            }
-
-            console.log(error);
-            // [END_EXCLUDE]
-            console.log(2);
-            
-          });
-          
-        // [END createwithemail]
-        console.log(1);
-    
-      }
-
-
-    function sendPasswordReset() {
-
-    var auth = firebase.auth();
-    var emailAddress = document.getElementById('email').value;
-
-      // [START sendpasswordemail]
-      firebase.auth().sendPasswordResetEmail(emailAddress).then(function() {
-        // Password Reset Email Sent!
-        // [START_EXCLUDE]
-        console.log('Password Reset Email Sent!');
-        // [END_EXCLUDE]
-      }).catch(function(error) {
-        // [START_EXCLUDE]
-        if (error.code == 'auth/invalid-email') {
-          console.log(error.message);
-        } else if (error.code == 'auth/user-not-found') {
-          console.log(error.message);
-        }
-        console.log(error);
-        // [END_EXCLUDE]
-      });
-      // [END sendpasswordemail];
+        return valid;
     }
 
     /* Helper for displaying error messages in UI */
-    /* errorMsg[string] target[element class or id] */
+    /* errorMsg[string] target[string: element class or id] */
     function setErrorFlag(errorMsg, target) {
+        target = target ? target : '#misc-error-flag'; 
         var selector = (target.indexOf('#') > -1 || target.indexOf('.') > -1)
                        ? target.substring(1, target.length) 
                        : target;
@@ -240,34 +275,6 @@
         el.innerHTML = errorMsg;
         var position = target.indexOf('misc') > -1 ? 'relative' : 'absolute';
         el.setAttribute('style', 'display:block; position:' + position);
-    }
-
-    /* Helper method for resetting error flags */
-    function resetErrorFlags(flag) {
-
-    }
-
-    /* Helper method for creating error message elements to display in UI */
-    /* String[required], element type[optional] */
-    function createErrorElement(errorMsg, elementType=null) {
-        elementType = elementType ? elementType : 'p'; 
-        var errorElement = document.createElement(elementType);
-        errorElement.setAttribute('style', 'position: absolute;');
-        errorElement.innerHTML = errorMsg;
-        return errorElement;
-    }
-
-    /* Helper method for displaying error in DOM */
-    /* errorElement[element], targetElement[string] accepts ID's # and classes . */
-    function attachErrorElement(errorElement, targetElement) {
-        if(targetElement.indexOf('#') > -1) {
-          document.getElementById(targetElement.substring(1, targetElement.length))
-                .appendChild(errorElement);
-        }
-        if(targetElement.indexOf('.') > -1) {
-          document.getElementsByClassName(targetElement.substring(1, targetElement.length))
-                .appendChild(errorElement);
-        }
     }
 
   </script>
@@ -303,16 +310,19 @@
       </div>
 
 
-
-      <!-- <div class="password-reset-input-group">
-          <p>Forgot your password? Type in your email in the space above and click this button below.</p>
-          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
-      </div>
+      <!-- Move to another page or remove -->
+      <div style="display:none;">
+        <div class="password-reset-input-group">
+            <p>Forgot your password? Type in your email in the space above and click this button below.</p>
+            <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
+        </div> 
 
         <div class="sign-up-input-group">
           <p>Don't have an account? Sign up now!</p>
           <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
-        </div> -->
+        </div>
+      </div>
+      <!--end block-->
 
     </div>
           
