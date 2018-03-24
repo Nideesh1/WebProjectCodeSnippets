@@ -28,6 +28,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
+  <!-- Custom css -->
+  <link rel="stylesheet" href="styles/css/home.css">
+
 
   <!-- Import and configure the Firebase SDK -->
   <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
@@ -166,14 +169,19 @@
   </script>
 </head>
 <body>
-      Home
-<br>
 
-          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signout">Sign Out</button>
+  <div class="home-wrapper">
+      <!-- Home -->
 
-        Do you want to change your password?
+      <div class="change-password-text"><h5>Do you want to change your password?</h5></div>
 
-          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Change My Password</button>
+      <button class="change-password-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="quickstart-password-reset" name="verify-email">Change My Password</button>
+
+      <!-- <button class="sign-out-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="quickstart-sign-in" name="signout">Sign Out</button> -->
+
+      <button class="cancel-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="quickstart-sign-in" name="cancel">Cancel</button>
+
+  </div>
 
 </body>
 </html>

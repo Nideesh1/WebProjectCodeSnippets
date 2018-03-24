@@ -1,0 +1,27 @@
+.verify-wrapper {
+    text-align: center;
+}
+
+.verification-form {
+    display: block;
+    margin: 0 auto;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+.account-success-text {
+    padding: 30px;
+    letter-spacing: 1.2px;
+}
+
+.verification-text {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.verification-button, .sign-out-button {
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
