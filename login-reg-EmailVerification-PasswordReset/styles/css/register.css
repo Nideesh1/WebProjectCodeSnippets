@@ -1,0 +1,51 @@
+.registration-form {
+    display: block;
+    margin: 0 auto;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+.register-wrapper .header {
+    text-align: center;
+}
+
+.mdl-textfield .mdl-js-textfield .mdl-textfield--floating-label {
+    width: auto;
+}
+
+.mdl-textfield__label {
+    margin: 0;
+    font-size: 12px;
+}
+
+.email-input-group, .password-input-group {
+    width: 100%;
+}
+
+.email-input-group, .password-input-group, .sign-in-button {
+    display: block;
+    margin: 0 auto;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#register-button button {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.cancel {
+    text-align: center;
+}
+
+.error-flag {
+    color: red;
+    font-size: 0.8em;
+}
+
+
