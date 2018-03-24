@@ -132,10 +132,13 @@
           if (errorCode === 'auth/wrong-password') {
             alert('Wrong password.');
           } else {
-            alert(errorMessage);
-          //Clearing the input fields
-          document.getElementById('email').value = "";
-          document.getElementById('password').value = "";
+            if(errorMessage){
+              console.log('ERROR: ', errorMessage);
+            }
+            //alert(errorMessage);
+          // //Clearing the input fields
+          // document.getElementById('email').value = "";
+          // document.getElementById('password').value = "";
 
 
           }
@@ -225,7 +228,8 @@
     <div class="header">
       <h4>DJ Chino</h4>
     </div>
-    <form class="registration-form">
+
+    <div class="registration-form">
 
       <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="email" id="email" name="email" maxlength="255" autofocus>
@@ -258,7 +262,7 @@
           <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
         </div> -->
 
-   </form>
+    </div>
           
   </div>
 </body>
