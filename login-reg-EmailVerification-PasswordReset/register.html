@@ -29,7 +29,7 @@
 <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
 <!-- Custom css -->
-<link rel="stylesheet" href="styles/css/index.css">
+<link rel="stylesheet" href="styles/css/register.css">
 
 
 <!-- Import and configure the Firebase SDK -->
@@ -43,7 +43,6 @@
     initApp();
 
   };
-
 
   function initApp() {
       // Listening for auth state changes.
@@ -85,8 +84,6 @@
 
           }
 
-
-
           // [END_EXCLUDE]
         } else {
           // User is signed out.
@@ -102,203 +99,186 @@
       });
       // [END authstatelistener]
 
-
       document.getElementById('quickstart-sign-up').addEventListener('click',  handleSignUp , false);
       document.getElementById('email').addEventListener('blur',  matchEmail , false); 
       document.getElementById('conf-email').addEventListener('blur',  matchEmail , false); 
       document.getElementById('password').addEventListener('blur',  matchPassword , false); 
-      document.getElementById('conf-password').addEventListener('blur',  matchPassword , false);  
+      document.getElementById('conf-password').addEventListener('blur',  matchPassword , false); 
 
       // document.getElementById("email-warning").style.display = 'none';
       // document.getElementById("password-warning").style.display = 'none';
 
     }
 
-    function matchEmail(){
-      var email = document.getElementById('email').value;
-      var confemail = document.getElementById('conf-email').value;
-      var emailwarning = document.getElementById("email-warning");
 
-      if((email !== confemail) && email  &&  confemail){
-        console.log("Your Emails Don't Match");
-        emailwarning.style.display = 'block';
-      } else{
-        emailwarning.style.display = 'none';
+    function matchEmail() {
+        var email = document.getElementById('email').value;
+        var confemail = document.getElementById('conf-email').value;
+        var emailwarning = document.getElementById("email-warning");
 
-        return true;
-      }
-    }
-
-    function matchPassword(){
-
-      console.log('BOad');
-      var password = document.getElementById('password').value;
-      var confpassword = document.getElementById('conf-password').value;
-      var passwordwarning = document.getElementById("password-warning");
-
-      if((password !== confpassword) && password &&  confpassword){
-        console.log("Your Passwords Don't Match");
-        passwordwarning.style.display = 'block';
-      }else{
-        passwordwarning.style.display = 'none';
-        return true;
-      }
+        if((email !== confemail) && email  &&  confemail) {
+            console.log("Your Emails Don't Match");
+            emailwarning.style.display = 'block';
+        } else {
+            emailwarning.style.display = 'none';
+            return true;
+        }
     }
 
 
+    function matchPassword() {
+        console.log('BOad');
+        var password = document.getElementById('password').value;
+        var confpassword = document.getElementById('conf-password').value;
+        var passwordwarning = document.getElementById("password-warning");
+
+        if(password &&  confpassword && (password !== confpassword)) {
+          console.log("Your Passwords Don't Match");
+          passwordwarning.style.display = 'block';
+        } else {
+          passwordwarning.style.display = 'none';
+          return true;
+        }
+    }
 
 
     function handleSignUp() {
-      var email = document.getElementById('email').value;
-      var password = document.getElementById('password').value;
-      var confemail = document.getElementById('conf-email').value;
-      var confpassword = document.getElementById('conf-password').value;
-      var errorEmail = document.getElementById("error-email");
-      var errorPassword = document.getElementById("error-password");
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        var confemail = document.getElementById('conf-email').value;
+        var confpassword = document.getElementById('conf-password').value;
+        var errorEmail = document.getElementById("error-email");
+        var errorPassword = document.getElementById("error-password");
 
-
-      errorEmail.innerHTML = "";
-      errorPassword.innerHTML  = "";
-
-      if (!confemail || email.length < 4) {
-        console.log('Please enter an email address.');
-        errorEmail.innerHTML = 'Please enter an email address.'
-   
-      }
-      if (!confpassword || password.length < 4) {
-        console.log('Please enter a password.');
-
-        errorPassword.innerHTML  = 'Please enter a password .';
-
-      }
-
-
-
-      if( matchPassword() && matchEmail() && confemail && confpassword){
-      // Sign in with email and pass.
-      // [START createwithemail]
-      firebase.auth().createUserWithEmailAndPassword(confemail, confpassword).catch(function(error) {
-        // Handle Errors here.
         errorEmail.innerHTML = "";
-        errorPassword.innerHTML = "";        
+        errorPassword.innerHTML  = "";
 
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        // [START_EXCLUDE]
-        if(errorMessage) {
-          var errorToDisplay = document.createElement('p'); 
-          console.log('FULL ERROR: ', error);
-          errorToDisplay.innerHTML = errorMessage;
-
-          var errorObject = ['auth/invalid-email', 'auth/weak-password', 'auth/email-already-in-use'];
-
-
-          var lastState = {
-            "emailError" : false,
-            "passwordError" : false
-          }
-
-
-          switch(errorCode) {
-            case 'auth/invalid-email':
-             errorEmail.innerHTML = 'email is invalid-email';
-             errorPassword.innerHTML  = "";
-            break;
-            case 'auth/weak-password':
-            errorEmail.innerHTML = "";
-            errorPassword.innerHTML  = 'password is too weak';
-            break;
-            case 'auth/email-already-in-use':
-            errorEmail.innerHTML = 'email is already in use';
-            errorPassword.innerHTML  = "";
-            break;
-            fieldName = "Uknown Error";
-          }
-
+        if (!confemail || email.length < 4) {
+          console.log('Please enter an email address.');
+          errorEmail.innerHTML = 'Please enter an email address.'
         }
 
-        console.log(error);
-        return;
-        // [END_EXCLUDE]
-        console.log(2);
-      });
-      // [END createwithemail]
+        if (!confpassword || password.length < 4) {
+          console.log('Please enter a password.');
+          errorPassword.innerHTML  = 'Please enter a password .';
+        }
+
+        if(matchPassword() && matchEmail() && confemail && confpassword) {
+            // Sign in with email and pass.
+            // [START createwithemail]
+            firebase.auth().createUserWithEmailAndPassword(confemail, confpassword).catch(function(error) {
+                // Handle Errors here.
+                errorEmail.innerHTML = "";
+                errorPassword.innerHTML = "";        
+
+                // [START_EXCLUDE]
+                if(error.message) {
+                    var errorToDisplay = document.createElement('p'); 
+                    errorToDisplay.innerHTML = error.message;
+                    console.log('FULL ERROR: ', error);
+
+                    var errorObject = ['auth/invalid-email', 'auth/weak-password', 'auth/email-already-in-use'];
+
+                    var lastState = {
+                        "emailError" : false,
+                        "passwordError" : false
+                    };
+
+                    switch(error.code) {
+                        case 'auth/invalid-email':
+                            errorEmail.innerHTML = 'email is invalid-email';
+                            errorPassword.innerHTML = "";
+                            break;
+                        case 'auth/weak-password':
+                            errorEmail.innerHTML = "";
+                            errorPassword.innerHTML = 'password is too weak';
+                            break;
+                        case 'auth/email-already-in-use':
+                            errorEmail.innerHTML = 'email is already in use';
+                            errorPassword.innerHTML = "";
+                            break;
+                        default:
+                            break;
+                    }
+
+                  }
+
+                console.log(error);
+                return;
+                // [END_EXCLUDE]
+                console.log(2);
+            });
+            // [END createwithemail]
 
 
-    
+      
 
-     }
+      }
 
     } 
-
-
-
 
   </script>
 </head>
 <body>
-  <div class="index-wrapper">
+  <div class="register-wrapper">
     <div class="header">
       <h4>DJ Chino</h4>
     </div>
 
+    <div class="registration-form">
+        <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="email" name="email" autofocus>
+          <label class="mdl-textfield__label" for="email">Email</label>
+          <span id="error-email" class="error-flag" style="position: absolute;"></span>
+        </div>
 
-    <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="email" name="email" autofocus>
-      <label class="mdl-textfield__label" for="email">Email</label>
-    </div>
+        <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="conf-email" name="conf-email" autofocus>
+          <label class="mdl-textfield__label" for="email">Confirm Email</label>
+          <span style="display:none; position:absolute;" id="email-warning" class="control-label error-flag" for="inputWarning">Your emails don't match.</label>
+        </div>
 
-    <div class="email-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="conf-email" name="conf-email" autofocus>
-      <label class="mdl-textfield__label" for="email">Confirm Email</label>
-    </div>
+        <div class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="password" id="password" name="password">
+          <label class="mdl-textfield__label" for="password">Password</label>
+          <span id="error-password" class="error-flag" style="position: absolute;"></span>
+        </div>
 
-    <label style="display: none" id="email-warning" class="control-label" for="inputWarning">Your Emails Don't Match</label>
+        <div class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="password" id="conf-password" name="conf-password">
+          <label class="mdl-textfield__label" for="password">Confirm Password</label>
+          <span style="display: none; position:absolute;" id="password-warning" class="control-label error-flag" for="inputWarning">Your passwords don't match.</label>
+        </div>
 
+        <div id="register-button" class="sign-up-input-group">
+          <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="quickstart-sign-up" name="signup">Register</button>
+        </div>
 
-    <span id="error-email"></span>
+        <div class="cancel">
+            <a href="index.html">Cancel</a>
+        </div>
+        
 
-    <div class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="password" name="password">
-      <label class="mdl-textfield__label" for="password">Password</label>
-    </div>
-
-
-    <div class="password-input-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="text" id="conf-password" name="conf-password">
-      <label class="mdl-textfield__label" for="password">Confirm Password</label>
-    </div>
-
-    <span id="error-password"></span>
-
-    <label style="display: none" id="password-warning" class="control-label" for="inputWarning">Your Passwords Don't Match</label>
-
-    <div id="register-button" class="sign-up-input-group">
-      <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="quickstart-sign-up" name="signup">Register</button>
-    </div>
-
-
-
-<!--       <div class="cannot-sign-up">
-        <label class="forgot-password"><a href="#">Forgot password?</a></label>
-        <label class="no-account"><a href="#">Create an account</a></label>
-      </div> -->
+    <!--       <div class="cannot-sign-up">
+            <label class="forgot-password"><a href="#">Forgot password?</a></label>
+            <label class="no-account"><a href="#">Create an account</a></label>
+          </div> -->
 
 
 
-      <!-- <div class="password-reset-input-group">
-          <p>Forgot your password? Type in your email in the space above and click this button below.</p>
-          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
-      </div>
+          <!-- <div class="password-reset-input-group">
+              <p>Forgot your password? Type in your email in the space above and click this button below.</p>
+              <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
+          </div>
 
-        <div class="sign-up-input-group">
-          <p>Don't have an account? Sign up now!</p>
-          <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
-        </div> -->
+            <div class="sign-up-input-group">
+              <p>Don't have an account? Sign up now!</p>
+              <button class="sign-up-button mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
+            </div> -->
 
 
 
+        </div>
       </div>
     </body>
     </html>
