@@ -1,0 +1,42 @@
+.retrieve-wrapper {
+    text-align: center;
+}
+
+.retrieve-wrapper .retrieve-form {
+    display: block;
+    margin: 0 auto;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+.mdl-textfield {
+    display: block;
+    margin: 0 auto;
+}
+
+.mdl-textfield__label {
+    margin-bottom: 0;
+}
+
+.button-group {
+    width: 100%;
+}
+.button-group button {
+    width: 100%;
+    display: block; 
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.link-wrapper {
+    display: inline-block;
+}
+
+.link-wrapper.back {
+    float: left;
+}
+
+.link-wrapper.cancel {
+    float: right;
+}
