@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width"> 
+  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+  <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAGGi_IBLvsKAcqnRYq69cXWMjFbkgVPP8",
+            authDomain: "testlogin-dc7ce.firebaseapp.com",
+            databaseURL: "https://testlogin-dc7ce.firebaseio.com",
+            projectId: "testlogin-dc7ce",
+            storageBucket: "testlogin-dc7ce.appspot.com",
+            messagingSenderId: "540241385169"
+        };
+        firebase.initializeApp(config);
+  </script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Material Design Theming -->
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+  <!-- Custom css -->
+  <link rel="stylesheet" href="styles/css/retrieve.css">
+
+
+  <!-- Import and configure the Firebase SDK -->
+  <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
+  <!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
+  <!-- <script src="/__/firebase/4.0.0/firebase-app.js"></script> -->
+  <!-- <script src="/__/firebase/4.0.0/firebase-auth.js"></script> -->
+  <!-- <script src="/__/firebase/init.js"></script> -->
+  <script type="text/javascript">
+
+      window.onload = function() {
+          initApp();
+      };
+
+      function initApp() {
+          var inputs = document.getElementsByClassName('input-group');
+          console.log(inputs);
+
+          document.getElementById('next').addEventListener('click', function() {
+              //read next element, push to back
+              document.getElementById(inputs[0].id).setAttribute('style', 'display:none;');
+              inputs[inputs.length-1].parentNode.insertBefore(inputs[0], inputs[inputs.length]);
+              document.getElementById(inputs[0].id).setAttribute('style', 'display:block;');
+              console.log(inputs);
+
+              if(inputs[0].id == 'security-question-2-input-group') {
+                  this.setAttribute('style', 'display:none;');
+                  document.getElementById('submit').setAttribute('style', 'display:block;');
+              }
+          }, false);
+
+          document.getElementsByClassName('back')[0].addEventListener('click', function() {
+              //read last element, push to front
+              if(inputs[0].id == 'email-input-group') {
+                  location.href = 'index.html';
+              } else {
+                  document.getElementById(inputs[0].id).setAttribute('style', 'display:none;');
+                  inputs[0].parentNode.insertBefore(inputs[inputs.length-1], inputs[0]);
+                  document.getElementById(inputs[0].id).setAttribute('style', 'display:block;');
+                  document.getElementById('submit').setAttribute('style', 'display:none;');
+                  document.getElementById('next').setAttribute('style', 'display:block;');
+                  console.log(inputs);
+              }
+          }, false);
+      }
+
+      /* Helper for displaying error messages in UI */
+      /* errorMsg[string] target[string: element class or id] */
+      function setErrorFlag(errorMsg, target) {
+          target = target ? target : '#misc-error-flag'; 
+          var selector = (target.indexOf('#') > -1 || target.indexOf('.') > -1)
+                        ? target.substring(1, target.length) 
+                        : target;
+          var el = target.indexOf('#') > -1 
+                  ? document.getElementById(selector) 
+                  : document.getElementsByClassName(selector)[0];
+          el.innerHTML = errorMsg;
+          var position = target.indexOf('misc') > -1 ? 'relative' : 'absolute';
+          el.setAttribute('style', 'display:block; position:' + position);
+      }
+      
+  </script>
+
+  </head>
+  <body>
+
+    <div class="retrieve-wrapper">
+
+      <div class="header"><h4>Retrieve your password</h4></div>
+
+      <div class="retrieve-form">
+
+          <div id="email-input-group" class="input-group">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="email" id="email" name="email" maxlength="255" autofocus>
+                <label class="mdl-textfield__label" for="email">Email</label>
+                <span id="email-error-flag" class="error-flag" style="display:none;"></span>
+            </div>
+          </div>
+
+          <div id="security-question-1-input-group" class="input-group" style="display:none;">
+              <label>Security Question 1:</label>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="answer1" name="security" maxlength="255" autofocus>
+                  <label class="mdl-textfield__label" for="email">Answer</label>
+                  <span id="security-question-error-flag" class="error-flag" style="display:none;"></span>
+              </div>
+          </div>
+
+          <div id="security-question-2-input-group" class="input-group" style="display:none;">
+              <label>Security Question 2:</label>
+              <div id="security-question-2-input-group" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="answer2" name="security" maxlength="255" autofocus>
+                  <label class="mdl-textfield__label" for="email">Answer</label>
+                  <span id="security-question-error-flag" class="error-flag" style="display:none;"></span>
+              </div>
+          </div>
+
+          <div class="button-group">
+              <button class="next-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="next" name="next">Next</button>
+              <button class="next-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="submit" name="submit" style="display:none;">Submit</button>
+              <span id="misc-error-flag" class="error-flag" style="display:none;"></span>
+          </div>
+
+          <div class="link-wrapper back">
+              <a href="#">Back</a>
+          </div>
+
+          <div class="link-wrapper cancel">
+              <a href="index.html">Cancel</a>
+          </div>
+
+          
+      </div>
+
+
+    </div>
+
+  </body>
+  </html>
