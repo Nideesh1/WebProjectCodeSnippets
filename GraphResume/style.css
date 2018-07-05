@@ -1,0 +1,15 @@
+#cy {
+  width: 500px;
+  height: 500px;
+  display: block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 5%;
+  border:1px solid black;
+  background-color: #89CFF0;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
