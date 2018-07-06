@@ -99,7 +99,7 @@ var cy = cytoscape({
       data: { id: 'Connor', name: 'Connor'}
     },
     { // node b
-      data: { id: 'Photographer', name: 'Photographer' }
+      data: { id: 'Photographer', name: 'Photographer' , position: { x: 200, y: 10 }}
     },
     { // edge ab
       data: { id: 'ab', source: 'Connor', target: 'Photographer' }
@@ -178,7 +178,7 @@ function appearNodes(){
   center += 1;
 
   var eles = cy.add([
-    { group: "nodes", data: { id: "MBA", name: 'MBA' }, position: { x: 200, y: 200 } },
+    { group: "nodes", data: { id: "MBA", name: 'MBA'   , position: { x: 200, y: 200 }} },
     { group: "edges", data: { id: "e0", source: "Connor", target: "MBA" } }
   ]);
 
@@ -208,16 +208,16 @@ var j = cy.$('#Photographer');
 console.log('clicked ' + element.id());
 console.log(center);
 
-if(center > 0){
-  cy.animate({
-  fit: {
-    eles: j,
-    padding: 100
-  }
-}, {
-  duration: 500
-});
+    if(center > 0){
+      cy.animate({
+      fit: {
+        eles: j,
+        padding: 100
+      }
+    }, {
+      duration: 500
+    });
 
-}
+    }
 
 }

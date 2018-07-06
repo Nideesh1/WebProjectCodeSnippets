@@ -20,10 +20,25 @@
 
 <div id="cy"></div>
 
-<script src="code.js"></script>
+<script src="code2.js"></script>
 
 <script type="text/javascript">
 	
+
+cy.$('#n1').on('click', function(e){
+  var ele = e.target;
+  console.log('click ' + ele.id());
+  First4Nodes();
+  First4Edges();
+});
+
+cy.$('#n2, #n3, #n4, #n5').on('click', function(e){
+  var ele = e.target;
+  zoomIn(this);
+
+});
+
+/*
 cy.$('#Connor').on('click', function(e){
   var ele = e.target;
   console.log('clicked ' + ele.id());
@@ -47,7 +62,7 @@ cy.$('#Photographer').on('touchstart', function(e){
   var ele = e.target;
 	zoomTo(ele);
 });
-
+*/
 
 
 </script>
