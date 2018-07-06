@@ -38,6 +38,28 @@ cy.$('#n2, #n3, #n4, #n5').on('click', function(e){
 
 });
 
+cy.$('#n2').on('click', function(e){
+  if(center > 0){
+    upperLeftNodes();
+  }
+});
+cy.$('#n3').on('click', function(e){
+  if(center > 0){
+    upperRightNodes();
+  }
+});
+cy.$('#n4').on('click', function(e){
+  if(center > 0){
+    lowerLeftNodes();
+  }
+});
+cy.$('#n5').on('click', function(e){
+  if(center > 0){
+    lowerRightNodes();
+  }
+});
+
+
 /*
 cy.$('#Connor').on('click', function(e){
   var ele = e.target;

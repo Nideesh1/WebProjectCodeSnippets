@@ -13,7 +13,7 @@ var cy =  cytoscape({
       data: { // element data (put json serialisable dev data here)
         id: 'n1', // mandatory (string or number) id for each element, assigned automatically on undefined
         parent: 'nparent', // indicates the compound node parent id; not defined => no parent
-        name: 'ME'
+        name: 'Click Me'
       },
 
 
@@ -31,7 +31,7 @@ var cy =  cytoscape({
       grabbable: true, // whether the node can be grabbed and moved by the user
 
       "style":{
-                'background-image':'https://farm8.staticflickr.com/7272/7633179468_3e19e45a0c_b.jpg',
+                'background-image':'https://vignette.wikia.nocookie.net/nation/images/f/fc/Star_full.png/revision/latest?cb=20130407014646',
                 'height': 200,
         'width': 200,
         "font-size":50
@@ -86,7 +86,7 @@ var cy =  cytoscape({
     { // node n3
       data: { id: 'n5' , name: 'Fitness Instructor'},
       position: { x: 550, y: 500 },
-      ocked: true, 
+      locked: true, 
       "style": {
       "text-valign": "bottom",
       "text-halign": "right",
@@ -94,6 +94,118 @@ var cy =  cytoscape({
                             'height': 200,
         'width': 200,
         'opacity':0.01
+      }
+    },
+
+        { // node n21
+      data: { id: 'n21' , name: 'UCSD Rady'},
+      position: { x: -350, y: -400 },
+      locked: true, 
+      "style": {
+      "text-valign": "top",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity':0.01
+      }
+    },
+
+     { // node n22
+      data: { id: 'n22' , name: 'Consultant'},
+      position: { x: -400, y: 100 },
+      locked: true, 
+      "style": {
+      "text-valign": "top",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity':0.01
+      }
+    },
+
+      { // node n31
+      data: { id: 'n31' , name: 'Nature'},
+      position: { x: 550, y: -400 },
+      locked: true, 
+      "style": {
+      "text-valign": "top",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity':0.01
+      }
+    },
+
+     { // node n32
+      data: { id: 'n32' , name: 'Portrait'},
+      position: { x: 900, y: 100 },
+      locked: true, 
+      "style": {
+      "text-valign": "bottom",
+      "text-halign": "right",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity': 0.01
+      }
+    },
+
+      { // node n41
+      data: { id: 'n41' , name: 'Dating'},
+      position: { x: -650, y: 400 },
+      locked: true, 
+      "style": {
+      "text-valign": "top",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity': 0.01
+      }
+    },
+
+     { // node n42
+      data: { id: 'n42' , name: 'Communication'},
+      position: { x: -450, y: 900 },
+      locked: true, 
+      "style": {
+      "text-valign": "bottom",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity': 0.01
+      }
+    },
+
+          { // node n51
+      data: { id: 'n51' , name: 'Certified'},
+      position: { x: 850, y: 400 },
+      locked: true, 
+      "style": {
+      "text-valign": "top",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity': 0.01
+      }
+    },
+
+     { // node n52
+      data: { id: 'n52' , name: 'NASM'},
+      position: { x: 450, y: 900 },
+      locked: true, 
+      "style": {
+      "text-valign": "bottom",
+      "text-halign": "left",
+        "font-size":50,
+        'height': 100,
+        'width': 100,
+        'opacity': 0.01
       }
     },
 
@@ -225,9 +337,9 @@ function First4Nodes(){
   });
 
   n2Ani.play();
-  n3Ani.play();
-  n4Ani.play();
-  n5Ani.play();
+    n3Ani.play();
+    n4Ani.play();
+    n5Ani.play();
 
 }
 
@@ -270,6 +382,71 @@ function First4Edges(){
   e3Ani.play();
   e4Ani.play();
 
+}
+
+function upperLeftNodes(){
+  var n21Ani = cy.$('#n21').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  var n22Ani = cy.$('#n22').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  n21Ani.play();
+  n22Ani.play();
+}
+function upperRightNodes(){
+  var n21Ani = cy.$('#n31').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  var n22Ani = cy.$('#n32').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  n21Ani.play();
+  n22Ani.play();
+}
+function lowerLeftNodes(){
+  var n21Ani = cy.$('#n41').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  var n22Ani = cy.$('#n42').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  n21Ani.play();
+  n22Ani.play();
+}
+function lowerRightNodes(){
+  var n21Ani = cy.$('#n51').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  var n22Ani = cy.$('#n52').animation({
+    style: {
+      'opacity':1
+    },
+    duration: 1000
+  });
+  n21Ani.play();
+  n22Ani.play();
 }
 
 
